@@ -128,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
     static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
     static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);
-    static int Hinh, xLeft, yTop, xRight, yBotton, m = 0, s = 0, width, height;
+    static int Hinh, xLeft, yTop, xRight, yBotton, m = 60, s = 0, width, height;
     static TCHAR leftTime[20];
     switch (message)
     {
@@ -140,20 +140,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         height = HIWORD(lParam);
         break;
     case WM_TIMER:
-        if (s >= 0 && s < 59)
+        if (m == 0 && s == 0)
         {
-            s += 1;
+            KillTimer(hWnd, 1); // Dừng khi hết giờ
         }
         else
         {
-            if (s == 59)
+            if (s == 0)
             {
-                s = 0;
-                m += 1;
+                m--;
+                s = 59;
+            }
+            else
+            {
+                s--;
             }
         }
-        wsprintfW(leftTime, L"Time: %d:%d", m, s);
+
+        wsprintfW(leftTime, L"Time: %02d:%02d", m, s);
         hdc = GetDC(hWnd);
+        SetTextColor(hdc, RGB(255, 0, 0));
         TextOut(hdc, width - 120, height - 20, leftTime, 20);
         ReleaseDC(hWnd, hdc);
         break;
