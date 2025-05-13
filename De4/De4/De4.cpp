@@ -127,10 +127,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static POINT point, pt[4], p[10000];
     static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
     static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
-    static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);;
-    static int Hinh, xLeft, yTop, xRight, yBotton;
+    static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);
+    static int Hinh, xLeft, yTop, xRight, yBotton, m = 0, s = 0, width, height;
+    static TCHAR leftTime[20];
     switch (message)
     {
+    case WM_CREATE:
+        SetTimer(hWnd, 1, 1000, NULL);
+        break;
+    case WM_SIZE:
+        width = LOWORD(lParam);
+        height = HIWORD(lParam);
+        break;
+    case WM_TIMER:
+        if (s >= 0 && s < 59)
+        {
+            s += 1;
+        }
+        else
+        {
+            if (s == 59)
+            {
+                s = 0;
+                m += 1;
+            }
+        }
+        wsprintfW(leftTime, L"Time: %d:%d", m, s);
+        hdc = GetDC(hWnd);
+        TextOut(hdc, width - 120, height - 20, leftTime, 20);
+        ReleaseDC(hWnd, hdc);
+        break;
     case WM_LBUTTONDOWN:
         xLeft = LOWORD(lParam);
         yTop = HIWORD(lParam);
