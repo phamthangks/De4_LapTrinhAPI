@@ -1,4 +1,4 @@
-// De4.cpp : Defines the entry point for the application.
+﻿// De4.cpp : Defines the entry point for the application.
 //
 
 #include "framework.h"
@@ -76,7 +76,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DE4));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_DE4);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDR_MENU1);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -123,14 +123,150 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static HDC hdc;
+    static POINT point, pt[4], p[10000];
+    static int Hinh, xLeft, yTop, xRight, yBotton;
     switch (message)
     {
+    case WM_LBUTTONDOWN:
+        xLeft = LOWORD(lParam);
+        yTop = HIWORD(lParam);
+        break;
+    case WM_LBUTTONUP:
+        xRight = LOWORD(lParam);
+        yBotton = HIWORD(lParam);
+
+        hdc = GetDC(hWnd);
+
+        if (Hinh == ID_HINH_THOI)
+        {
+            pt[0].x = xRight - (xRight - xLeft) / 2;
+            pt[0].y = yTop;
+            pt[1].x = xRight;
+            pt[1].y = yBotton - (yBotton - yTop) / 2;
+            pt[2].x = xRight - (xRight - xLeft) / 2;;
+            pt[2].y = yBotton;
+            pt[3].x = xLeft;
+            pt[3].y = yBotton - (yBotton - yTop) / 2;
+            Polygon(hdc, pt, 4);
+        }
+        if (Hinh == ID_HINH_CN)
+        {
+            Rectangle(hdc, xLeft, yTop, xRight, yBotton);
+            /*int side = min(abs(xRight - xLeft), abs(yBotton - yTop));
+            Rectangle(hdc, xLeft, yTop, xLeft + side, yTop + side);*/
+        }
+        if (Hinh == ID_HINH_ELLIPSE)
+        {
+            Ellipse(hdc, xLeft, yTop, xRight, yBotton);
+        }
+        if (Hinh == ID_HINH_TAMGIAC)
+        {
+            pt[0].x = xRight - (xRight - xLeft) / 2;
+            pt[0].y = yTop;
+            pt[1].x = xRight;
+            pt[1].y = yBotton;
+            pt[2].x = xLeft;
+            pt[2].y = yBotton;
+            Polygon(hdc, pt, 3);
+        }
+        if (Hinh == ID_HINH_TGV)
+        {
+            pt[0].x = xLeft;
+            pt[0].y = yTop;
+            pt[1].x = xRight;
+            pt[1].y = yBotton;
+            pt[2].x = xLeft;
+            pt[2].y = yBotton;
+            Polygon(hdc, pt, 3);
+        }
+        if (Hinh == ID_DUONGTHANG)
+        {
+            MoveToEx(hdc, xLeft, yTop, NULL);
+            LineTo(hdc, xRight, yBotton);
+        }
+        if (Hinh == ID_HINH_CHORD)
+        {
+            int centerX = (xLeft + xRight) / 2;
+            int centerY = (yTop + yBotton) / 2;
+            int radiusX = (xRight - xLeft) / 2;
+            int radiusY = (yBotton - yTop) / 2;
+
+            // Điểm bắt đầu và kết thúc nằm chéo góc 45 độ
+            int startX = centerX - radiusX / 2;
+            int startY = centerY - radiusY / 2;
+            int endX = centerX + radiusX / 2;
+            int endY = centerY + radiusY / 2;
+
+            Chord(hdc, xLeft, yTop, xRight, yBotton, startX, startY, endX, endY);
+        }
+
+        if (Hinh == ID_HINH_QUAT_PIE)
+        {
+            // Tọa độ hình chữ nhật bao quanh hình elip
+            int xL = min(xLeft, xRight);
+            int xR = max(xLeft, xRight);
+            int yT = min(yTop, yBotton);
+            int yB = max(yTop, yBotton);
+
+            // Tính trung điểm để xác định bán kính
+            int centerX = (xL + xR) / 2;
+            int centerY = (yT + yB) / 2;
+
+            // Điểm bắt đầu cung tròn (trên giữa)
+            int xStart = centerX;
+            int yStart = yT;
+
+            // Điểm kết thúc cung tròn (trái giữa)
+            int xEnd = xL;
+            int yEnd = centerY;
+
+            Pie(hdc, xL, yT, xR, yB, xStart, yStart, xEnd, yEnd);
+        }
+
+
+        if (Hinh == ID_HINH_CUNG)
+        {
+            int centerX = (xLeft + xRight) / 2;
+            int centerY = (yTop + yBotton) / 2;
+            int radiusX = (xRight - xLeft) / 2;
+            int radiusY = (yBotton - yTop) / 2;
+
+            // Điểm bắt đầu và kết thúc nằm chéo góc 45 độ
+            int startX = centerX - radiusX / 2;
+            int startY = centerY - radiusY / 2;
+            int endX = centerX + radiusX / 2;
+            int endY = centerY + radiusY / 2;
+
+            Arc(hdc, xLeft, yTop, xRight, yBotton, startX, startY, endX, endY);
+        }
+        if (Hinh == ID_HINH_CN_BOGOC)
+        {
+            int xCorner = (xRight - xLeft) / 5;
+            int yCorner = (yBotton - yTop) / 5;
+            RoundRect(hdc, xLeft, yTop, xRight, yBotton, xCorner, yCorner);
+        }
+        ReleaseDC(hWnd, hdc);
+        break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
             // Parse the menu selections:
             switch (wmId)
             {
+            case ID_HINH_THOI:
+            case ID_HINH_CN:
+            case ID_HINH_ELLIPSE:
+            case ID_DUONGTHANG:
+            case ID_HINH_TAMGIAC:
+            case ID_HINH_TGV:
+            case ID_HINH_CHORD:
+            case ID_HINH_QUAT_PIE:
+            case ID_HINH_CN_BOGOC:
+            case ID_HINH_CUNG:
+                Hinh = wmId;
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
