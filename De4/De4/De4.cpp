@@ -125,6 +125,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static HDC hdc;
     static POINT point, pt[4], p[10000];
+    static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
+    static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
+    static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);;
     static int Hinh, xLeft, yTop, xRight, yBotton;
     switch (message)
     {
@@ -137,6 +140,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         yBotton = HIWORD(lParam);
 
         hdc = GetDC(hWnd);
+        hPen = CreatePen(PS_SOLID, 3, colorVien);
+        hBrush = CreateSolidBrush(colorNen); 
+
+        SelectObject(hdc, hPen);
+        SelectObject(hdc, hBrush);
 
         if (Hinh == ID_HINH_THOI)
         {
@@ -255,6 +263,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Parse the menu selections:
             switch (wmId)
             {
+            case ID_Mau_XanhLa:
+                colorNen = RGB(0, 255, 0);
+                break;
+            case ID_Mau_Vang:
+                colorNen = RGB(255, 255, 0);
+                break;
+            case ID_Mau_Do:
+                colorNen = RGB(255, 0, 0);
+                break;
             case ID_HINH_THOI:
             case ID_HINH_CN:
             case ID_HINH_ELLIPSE:
