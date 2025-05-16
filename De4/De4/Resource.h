@@ -33,7 +33,7 @@
 #define ID_M32787                       32787
 #define ID_M32788                       32788
 #define ID_Mau_Vang                     32789
-#define ID_Mau_Do                       32790
+#define ID_Mau_Do                       32790 
 #define ID_Mau_XanhLa                   32791
 #define ID_M32792                       32792
 #define ID_M32793                       32793

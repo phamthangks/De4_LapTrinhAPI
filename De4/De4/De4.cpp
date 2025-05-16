@@ -359,6 +359,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case ID_KN_DIAGCROSS:
                 styleBrush = HS_DIAGCROSS;
                 break;
+            case ID_THOAT:
+                if (MessageBox(NULL, TEXT("Bạn có muốn thoát không?"), TEXT("Yes or No"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+                    PostQuitMessage(0);
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -369,6 +373,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
+        break;
+    case WM_CLOSE:
+        if (MessageBox(NULL, TEXT("Bạn có muốn thoát không?"), TEXT("Yes or No"), MB_YESNO | MB_ICONQUESTION) == IDYES)
+            PostQuitMessage(0);
         break;
     case WM_PAINT:
         {
