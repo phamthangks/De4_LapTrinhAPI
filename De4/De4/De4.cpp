@@ -128,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
     static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
     static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);
-    static int Hinh, xLeft, yTop, xRight, yBotton, m = 60, s = 0, width, height, styleBrush = -1;
+    static int Hinh, xLeft, yTop, xRight, yBotton, m = 60, s = 0, width, height, stylePen = PS_SOLID, styleBrush = -1;
     static TCHAR leftTime[20];
     switch (message)
     {
@@ -172,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         yBotton = HIWORD(lParam);
 
         hdc = GetDC(hWnd);
-        hPen = CreatePen(PS_SOLID, 3, colorVien);
+        hPen = CreatePen(stylePen, 1, colorVien);
         if (styleBrush == HS_HORIZONTAL || styleBrush == HS_VERTICAL || styleBrush == HS_DIAGCROSS)
             hBrush = CreateHatchBrush(styleBrush, colorNen);
         else
@@ -327,6 +327,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case ID_HINH_CN_BOGOC:
             case ID_HINH_CUNG:
                 Hinh = wmId;
+                break;
+            case ID_KV_DOT:
+                stylePen = PS_DOT;
+                break;
+            case ID_KV_DASH:
+                stylePen = PS_DASH;
+                break;
+            case ID_KV_SOLD:
+                stylePen = PS_SOLID;
                 break;
             case ID_KN_HORIZONTAL:
                 styleBrush = HS_HORIZONTAL;
