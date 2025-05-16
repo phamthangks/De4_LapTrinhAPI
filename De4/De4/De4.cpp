@@ -128,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
     static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
     static COLORREF colorNen = RGB(255, 255, 255), colorVien = RGB(0, 0, 0);
-    static int Hinh, xLeft, yTop, xRight, yBotton, m = 60, s = 0, width, height;
+    static int Hinh, xLeft, yTop, xRight, yBotton, m = 60, s = 0, width, height, styleBrush = -1;
     static TCHAR leftTime[20];
     switch (message)
     {
@@ -173,7 +173,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         hdc = GetDC(hWnd);
         hPen = CreatePen(PS_SOLID, 3, colorVien);
-        hBrush = CreateSolidBrush(colorNen); 
+        if (styleBrush == HS_HORIZONTAL || styleBrush == HS_VERTICAL || styleBrush == HS_DIAGCROSS)
+            hBrush = CreateHatchBrush(styleBrush, colorNen);
+        else
+            hBrush = CreateSolidBrush(colorNen);
 
         SelectObject(hdc, hPen);
         SelectObject(hdc, hBrush);
@@ -324,6 +327,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case ID_HINH_CN_BOGOC:
             case ID_HINH_CUNG:
                 Hinh = wmId;
+                break;
+            case ID_KN_HORIZONTAL:
+                styleBrush = HS_HORIZONTAL;
+                break;
+            case ID_KN_VERTICAL:
+                styleBrush = HS_VERTICAL;
+                break;
+            case ID_KN_DIAGCROSS:
+                styleBrush = HS_DIAGCROSS;
                 break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
