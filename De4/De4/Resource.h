@@ -14,9 +14,9 @@
 #define IDR_MAINFRAME                   128
 #define IDR_MENU1                       129
 #define ID_H32771                       32771
-#define ID_HINH_ELLIPSE                 32772 
+#define ID_HINH_ELLIPSE                 32772
 #define ID_H32773                       32773
-#define ID_HINH_TAMGIAC                 32774 
+#define ID_HINH_TAMGIAC                 32774
 #define ID_DUONGTHANG                   32775
 #define ID_H32776                       32776
 #define ID_HINH_THOI                    32777
@@ -34,6 +34,12 @@
 #define ID_Mau_Vang                     32789
 #define ID_Mau_Do                       32790
 #define ID_Mau_XanhLa                   32791
+#define ID_M32792                       32792
+#define ID_M32793                       32793
+#define ID_M32794                       32794
+#define ID_VIEN_DO                      32795 
+#define ID_VIEN_XanhLa                  32796
+#define ID_VIEN_Vang                    32797
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -42,7 +48,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        130
-#define _APS_NEXT_COMMAND_VALUE         32792
+#define _APS_NEXT_COMMAND_VALUE         32798
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

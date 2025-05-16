@@ -304,6 +304,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case ID_Mau_Do:
                 colorNen = RGB(255, 0, 0);
                 break;
+            case ID_VIEN_XanhLa:
+                colorVien = RGB(0, 255, 0); 
+                break;
+            case ID_VIEN_Vang: 
+                colorVien = RGB(255, 255, 0); 
+                break;
+            case ID_VIEN_DO:
+                colorVien = RGB(255, 0, 0);
+                break;
             case ID_HINH_THOI:
             case ID_HINH_CN:
             case ID_HINH_ELLIPSE:
