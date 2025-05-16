@@ -16,6 +16,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+HMENU menuMain; 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -96,6 +97,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
+   menuMain = LoadMenu(hInst, MAKEINTRESOURCE(IDR_MENU2)); 
 
    HWND hWnd = CreateWindowW(szWindowClass, TEXT("Thang-221230998"), WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
@@ -124,6 +126,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static HDC hdc;
+    static HMENU menuSub; 
     static POINT point, pt[4], p[10000];
     static HPEN hPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
     static HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
@@ -291,6 +294,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         ReleaseDC(hWnd, hdc);
         break;
+     case WM_RBUTTONDOWN:
+         menuSub = GetSubMenu(menuMain, 0);
+         point.x = LOWORD(lParam);
+         point.y = HIWORD(lParam);
+         ClientToScreen(hWnd, &point);
+         TrackPopupMenu(menuSub, TPM_RIGHTBUTTON, point.x, point.y, 0, hWnd, nullptr);
+         break;
 
     case WM_COMMAND:
         {
@@ -305,6 +315,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 colorNen = RGB(255, 255, 0);
                 break;
             case ID_Mau_Do:
+                colorNen = RGB(255, 0, 0);
+                break;
+            case ID_Nen_Do2:    
                 colorNen = RGB(255, 0, 0);
                 break;
             case ID_VIEN_XanhLa:
